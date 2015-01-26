@@ -1,4 +1,5 @@
-﻿using imagesIPM.Helpers;
+﻿using imagesIPM.Common;
+using imagesIPM.Helpers;
 using imagesIPM.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,48 @@ namespace imagesIPM
     public sealed partial class MainPage : Page
     {
         ImageBrowserViewModel vm;
+        private NavigationHelper navigationHelper;
+
 
         public MainPage()
         {
             this.InitializeComponent();
             vm= new ImageBrowserViewModel();
             this.DataContext = vm;
+
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            App.Current.Suspending += App_Suspending;
+
+        }
+
+        private void App_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            
+        }
+
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+            
+        }
+
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        {
+            
+        }
+
+        private void LoadState()
+        {
+            //vm = Settings.ViewModel;
+            //this.DataContext = this.viewModel;
+
+            //lastPathManager.Paths = new List<string>(viewModel.LastPaths);
+        }
+
+        private void SaveState()
+        {
+            //Settings.ViewModel = viewModel;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -134,6 +171,7 @@ namespace imagesIPM
         {
 
             var dialog = new InputDialog();
+            dialog.InputText = vm.Filename.Split('.')[0];
             var result = await dialog.ShowAsync(
                 "Nazwa","",
                 "OK",

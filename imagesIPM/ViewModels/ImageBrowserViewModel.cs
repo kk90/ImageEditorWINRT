@@ -91,6 +91,25 @@ namespace imagesIPM.ViewModels
             Notify("ImageSource");
         }
 
+
+        private List<string> lastPaths;
+        public List<string> LastPaths
+        {
+            get
+            {
+                 if (lastPaths == null)
+                    lastPaths = new List<string>();
+                return lastPaths;
+            }
+
+            set
+            {
+                lastPaths = value;
+                Notify("LastPaths");
+            }
+        }
+
+
         private StorageFile selectedFile;
         public StorageFile SelectedFile
         {
