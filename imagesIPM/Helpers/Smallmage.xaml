@@ -1,0 +1,16 @@
+﻿<UserControl
+    x:Class="imagesIPM.Helpers.Smallmage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:imagesIPM.Helpers"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+>
+    <Grid>
+        <StackPanel>
+            <Image Name="tumb" Height="100" VerticalAlignment="Top"/>
+            <TextBlock Name="name" Height="20" VerticalAlignment="Bottom" TextTrimming="WordEllipsis" TextWrapping="Wrap" MaxWidth="100"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
