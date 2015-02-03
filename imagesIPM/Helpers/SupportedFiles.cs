@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace imagesIPM.Helpers
 {
-    class SupportedFiles
+    public class SupportedFiles
     {
         public static string[] types = new string[]
         {
