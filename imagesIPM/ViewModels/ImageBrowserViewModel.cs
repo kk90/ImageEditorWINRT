@@ -1,4 +1,5 @@
-﻿using System;
+﻿using imagesIPM.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,9 +14,29 @@ namespace imagesIPM.ViewModels
     class ImageBrowserViewModel : INotifyPropertyChanged
     {
 
+        public ImageBrowserViewModel()
+        {
+            PM = new PathsManager();
+        }
+
         public BasicProperties Properties { get; set; }
 
         public string Folder { get; set; }
+
+        private PathsManager PM;
+
+        public List<string> LastPaths
+        {
+            get { return 
+                new List<string>(PM.list());
+            }
+        }
+
+        public void addPath(string path)
+        {
+            PM.PushPath(path);
+            Notify("LastPaths");
+        }
 
         public string Filename
         {
@@ -91,24 +112,15 @@ namespace imagesIPM.ViewModels
             Notify("ImageSource");
         }
 
+        private int mSelectedPathIndex;
 
-        private List<string> lastPaths;
-        public List<string> LastPaths
+        public int SelectedPathIndex
         {
-            get
-            {
-                 if (lastPaths == null)
-                    lastPaths = new List<string>();
-                return lastPaths;
-            }
-
-            set
-            {
-                lastPaths = value;
-                Notify("LastPaths");
+            get { return mSelectedPathIndex; }
+            set { mSelectedPathIndex = value;
+            Notify("SelectedPathIndex");
             }
         }
-
 
         private StorageFile selectedFile;
         public StorageFile SelectedFile
@@ -137,6 +149,6 @@ namespace imagesIPM.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public Windows.UI.Xaml.Media.Imaging.BitmapImage ImageSource;
+   
     }
 }

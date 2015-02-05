@@ -88,15 +88,21 @@ namespace imagesIPM
             picker.ViewMode = PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             var folder = await picker.PickSingleFolderAsync();
+            if (folder == null)
+            {
+                //canceled
+                return;
+            }
             StorageApplicationPermissions.FutureAccessList.Add(folder);
-            //this.UpdateLastPaths(folder.Path);
-            vm.Folder = folder.Path;
-            loadThubmadilands();
-
+            vm.addPath(folder.Path);
+            vm.SelectedPathIndex = vm.LastPaths.Count-1;
         }
 
         private async void loadThubmadilands()
         {
+
+            if (vm.Folder == null)
+                return;
             ImageGalleryGrid.Items.Clear();
 
             var folder = await StorageFolder.GetFolderFromPathAsync(vm.Folder);
@@ -119,7 +125,9 @@ namespace imagesIPM
 
         private void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+           var aa= (sender as ComboBox).SelectedItem;
+           vm.Folder = aa as string;
+           loadThubmadilands();
         }
 
         private async void ImageGalleryGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
