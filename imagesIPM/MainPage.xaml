@@ -57,10 +57,10 @@
             
             <Grid Grid.Row="1" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="300"/>
-                    <ColumnDefinition Width="Auto" MaxWidth="1000"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" MaxWidth="500"/>
                 </Grid.ColumnDefinitions>
-                <GridView x:Name="ImageGalleryGrid" Grid.Column="1" CanReorderItems="True" CanDragItems="True" SelectionChanged="ImageGalleryGrid_SelectionChanged">
+                <GridView x:Name="ImageGalleryGrid" Grid.Column="1" CanReorderItems="True" CanDragItems="True" SelectionChanged="ImageGalleryGrid_SelectionChanged" SelectedIndex="{Binding SelectedImageIndex, Mode=TwoWay}">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid MaximumRowsOrColumns="8"/>

@@ -11,19 +11,20 @@ using Windows.UI.Xaml;
 
 namespace imagesIPM.ViewModels
 {
-    class ImageBrowserViewModel : INotifyPropertyChanged
+    public class ImageBrowserViewModel : INotifyPropertyChanged
     {
 
-        public ImageBrowserViewModel()
-        {
-            PM = new PathsManager();
-        }
 
-        public BasicProperties Properties { get; set; }
 
         public string Folder { get; set; }
 
-        private PathsManager PM;
+        private PathsManager PM = new PathsManager();
+
+        public PathsManager PM1
+        {
+            get { return PM; }
+            set { PM = value; }
+        }
 
         public List<string> LastPaths
         {
@@ -40,50 +41,26 @@ namespace imagesIPM.ViewModels
 
         public string Filename
         {
-            get
-            {
-                if (selectedFile == null)
-                {
-                    return "";
-                }
-                return selectedFile.Name;
-            }
+            get;
+            set;
         }
 
         public string Size
         {
-            get
-            {
-                if (selectedFile == null)
-                {
-                    return "";
-                }
-                return Math.Round(Properties.Size/1024.0,2).ToString()+" kb" ;
-            }
+            get;
+            set;
+
         }
 
         public string Path
         {
-            get
-            {
-                if (selectedFile == null)
-                {
-                    return "";
-                }
-                return selectedFile.Path;
-            }
+            get;
+            set;
         }
 
         public string Date
         {
-            get
-            {
-                if (selectedFile == null)
-                {
-                    return "";
-                }
-                return Properties.DateModified.ToString();
-            }
+            get;set;
         }
 
 
@@ -91,18 +68,19 @@ namespace imagesIPM.ViewModels
         {
             get
             {
-                if (selectedFile == null)
+                if (DetailsVisible)
                 {
-                    return Visibility.Collapsed;
+                    return Visibility.Visible;
+                    
                 }
                 else
                 {
-                    return Visibility.Visible;
+                    return Visibility.Collapsed;
                 }
             }
         }
 
-        private void NotifySelectedFileParams()
+        public void NotifySelectedFileParams()
         {
             Notify("Filename");
             Notify("Size");
@@ -122,21 +100,21 @@ namespace imagesIPM.ViewModels
             }
         }
 
-        private StorageFile selectedFile;
-        public StorageFile SelectedFile
+        private int mSelectedImageIndex;
+        public int SelectedImageIndex
         {
             get
             {
-                return selectedFile;
+                return mSelectedImageIndex;
             }
-
             set
             {
-                selectedFile = value;
-                NotifySelectedFileParams();
+                mSelectedImageIndex=value;
+                Notify("SelectedImageIndex");
             }
         }
-        
+
+
         
         
         private void Notify(string name)
@@ -149,6 +127,8 @@ namespace imagesIPM.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-   
+
+
+        public bool DetailsVisible { get; set; }
     }
 }

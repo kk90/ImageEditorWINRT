@@ -11,6 +11,12 @@ namespace imagesIPM.Helpers
         private int PATHS_TO_REMEMBER = 10;
         private List<string> paths = new List<string>();
 
+        public List<string> Paths
+        {
+            get { return paths; }
+            set { paths = value; }
+        }
+
         public void PushPath(string path)
         {
             if (paths.Count > PATHS_TO_REMEMBER-1)
@@ -20,7 +26,7 @@ namespace imagesIPM.Helpers
             paths.Add(path);
         }
 
-        public  List<string> list()
+        public List<string> list()
         {
             return paths;
             

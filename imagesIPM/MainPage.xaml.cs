@@ -31,8 +31,10 @@ namespace imagesIPM
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        ImageBrowserViewModel vm;
+        private ImageBrowserViewModel vm;
         private NavigationHelper navigationHelper;
+        private BrowserPageSettingsSerializer Settings = new BrowserPageSettingsSerializer();
+        private StorageFile SelectedFile;
 
 
         public MainPage()
@@ -48,32 +50,43 @@ namespace imagesIPM
 
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedFrom(e);
+        }
+
         private void App_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            
+            SaveState();
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            
+            SaveState();
         }
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            
+            LoadState();
+           
         }
 
         private void LoadState()
         {
-            //vm = Settings.ViewModel;
-            //this.DataContext = this.viewModel;
+            vm = Settings.ViewModel;
+            this.DataContext = this.vm;
 
             //lastPathManager.Paths = new List<string>(viewModel.LastPaths);
         }
 
         private void SaveState()
         {
-            //Settings.ViewModel = viewModel;
+            Settings.ViewModel = vm;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -118,7 +131,7 @@ namespace imagesIPM
                 }
             }
 
-            
+            ImageGalleryGrid_SelectionChanged(null, null);
         }
 
 
@@ -132,11 +145,23 @@ namespace imagesIPM
 
         private async void ImageGalleryGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ImageGalleryGrid.SelectedItem!=null)
+            try
             {
-                vm.Properties = await (ImageGalleryGrid.SelectedItem as Smallmage).File.GetBasicPropertiesAsync();
-                vm.SelectedFile = (ImageGalleryGrid.SelectedItem as Smallmage).File;
+                ImageGalleryGrid.SelectedItem = ImageGalleryGrid.Items[vm.SelectedImageIndex];
+            }catch{
 
+            }
+                if (ImageGalleryGrid.SelectedItem!=null)
+            {
+                var Properties = await (ImageGalleryGrid.SelectedItem as Smallmage).File.GetBasicPropertiesAsync();
+                vm.Size = Math.Round(Properties.Size / 1024.0, 2).ToString() + " kb";
+                vm.Date = Properties.DateModified.ToString();
+
+                SelectedFile = (ImageGalleryGrid.SelectedItem as Smallmage).File;
+
+                vm.Filename = SelectedFile.Name;
+                vm.Path = SelectedFile.Path;
+                vm.DetailsVisible = true;
 
                 var bitmap = new BitmapImage();
                 var stream = await (ImageGalleryGrid.SelectedItem as Smallmage).File.OpenReadAsync();
@@ -146,15 +171,17 @@ namespace imagesIPM
             }
             else
             {
-                vm.SelectedFile = null;
+                SelectedFile = null;
+                vm.DetailsVisible = false;
             }
+            vm.NotifySelectedFileParams();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             //edit
 
-            this.Frame.Navigate(typeof(ImegeEdit), vm.SelectedFile);
+            this.Frame.Navigate(typeof(ImegeEdit), SelectedFile);
 
         }
 
@@ -187,8 +214,8 @@ namespace imagesIPM
 
             if (result == "OK")
             {
-                var text = dialog.InputText + vm.SelectedFile.FileType;
-                await vm.SelectedFile.RenameAsync(text, NameCollisionOption.GenerateUniqueName);
+                var text = dialog.InputText + SelectedFile.FileType;
+                await SelectedFile.RenameAsync(text, NameCollisionOption.GenerateUniqueName);
                 loadThubmadilands();
             }
         }
@@ -196,7 +223,7 @@ namespace imagesIPM
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             //info
-
+           
 
         }
 
