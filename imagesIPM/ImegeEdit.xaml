@@ -13,6 +13,9 @@
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">ImageEditor</x:String>
+        <Style TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
     </Page.Resources>
 
     <!--
@@ -45,6 +48,23 @@
                         AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image Name="MainImage"/>
+            <StackPanel Grid.Column="1">
+                <Button Content="Revert" IsEnabled="{Binding ImgChanged}"/>
+                <Button Content="Negative"/>
+                <Button Content="Brightness"/>
+                <Button Content="Corp"/>
+                <Button Content="Save" Click="Button_Click_1"/>
+                <Button Content="Close" Click="Button_Click"/>
+                
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

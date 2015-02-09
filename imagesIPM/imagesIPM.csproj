@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ImageBrowserViewModel.cs" />
+    <Compile Include="ViewModels\ImageEditorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
