@@ -30,6 +30,8 @@ namespace imagesIPM
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private ImageEditorViewModel vm;
+        private WriteableBitmap editBitmap;
+        private WriteableBitmap originalBitmap;
 
 
         public ObservableDictionary DefaultViewModel
@@ -68,11 +70,13 @@ namespace imagesIPM
 
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+
         }
 
  
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+
         }
 
         #region NavigationHelper registration
