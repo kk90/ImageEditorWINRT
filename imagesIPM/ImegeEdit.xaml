@@ -55,13 +55,22 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            
             <Image Name="MainImage"/>
             <StackPanel Grid.Column="1">
-                <Button Content="Revert" IsEnabled="{Binding ImgChanged}"/>
-                <Button Content="Negative"/>
-                <Button Content="Brightness"/>
-                <Button Content="Corp"/>
-                <Button Content="Save" Click="Button_Click_1"/>
+                <Button Content="Revert" IsEnabled="{Binding ImgChanged}" Click="Button_Click_2"/>
+                <Button Content="Negative" Click="Button_Click_3"/>
+                <Button Content="Brightness" Click="Button_Click_4"/>
+                <Grid Name="BrightnesVisibility" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="+" Click="Button_Click_5"></Button>
+                    <Button Content="-" Grid.Column="1" Click="Button_Click_6"></Button>
+                </Grid>
+                <Button Content="Corp" Click="Button_Click_7"/>
+                <Button Content="Save" IsEnabled="{Binding ImgChanged}" Click="Button_Click_1"/>
                 <Button Content="Close" Click="Button_Click"/>
                 
             </StackPanel>
