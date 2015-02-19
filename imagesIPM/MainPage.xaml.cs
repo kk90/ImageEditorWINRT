@@ -147,34 +147,41 @@ namespace imagesIPM
         {
             try
             {
-                ImageGalleryGrid.SelectedItem = ImageGalleryGrid.Items[vm.SelectedImageIndex];
-            }catch{
+                try
+                {
+                    ImageGalleryGrid.SelectedItem = ImageGalleryGrid.Items[vm.SelectedImageIndex];
+                }
+                catch
+                {
 
+                }
+                if (ImageGalleryGrid.SelectedItem != null)
+                {
+
+                    var Properties = await (ImageGalleryGrid.SelectedItem as Smallmage).File.GetBasicPropertiesAsync();
+                    vm.Size = Math.Round(Properties.Size / 1024.0, 2).ToString() + " kb";
+                    vm.Date = Properties.DateModified.ToString();
+
+                    SelectedFile = (ImageGalleryGrid.SelectedItem as Smallmage).File;
+
+                    vm.Filename = SelectedFile.Name;
+                    vm.Path = SelectedFile.Path;
+                    vm.DetailsVisible = true;
+
+                    var bitmap = new BitmapImage();
+                    var stream = await (ImageGalleryGrid.SelectedItem as Smallmage).File.OpenReadAsync();
+                    await bitmap.SetSourceAsync(stream);
+
+                    ImageMain.Source = bitmap;
+                }
+                else
+                {
+                    SelectedFile = null;
+                    vm.DetailsVisible = false;
+                }
+                vm.NotifySelectedFileParams();
             }
-                if (ImageGalleryGrid.SelectedItem!=null)
-            {
-                var Properties = await (ImageGalleryGrid.SelectedItem as Smallmage).File.GetBasicPropertiesAsync();
-                vm.Size = Math.Round(Properties.Size / 1024.0, 2).ToString() + " kb";
-                vm.Date = Properties.DateModified.ToString();
-
-                SelectedFile = (ImageGalleryGrid.SelectedItem as Smallmage).File;
-
-                vm.Filename = SelectedFile.Name;
-                vm.Path = SelectedFile.Path;
-                vm.DetailsVisible = true;
-
-                var bitmap = new BitmapImage();
-                var stream = await (ImageGalleryGrid.SelectedItem as Smallmage).File.OpenReadAsync();
-                await bitmap.SetSourceAsync(stream);
-
-                ImageMain.Source = bitmap;
-            }
-            else
-            {
-                SelectedFile = null;
-                vm.DetailsVisible = false;
-            }
-            vm.NotifySelectedFileParams();
+            catch { }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

@@ -167,6 +167,12 @@
     <Reference Include="WriteableBitmapEx.WinRT">
       <HintPath>..\..\..\WriteableBitmapEx_v1.0.14.0\WinRT\WriteableBitmapEx.WinRT.dll</HintPath>
     </Reference>
+    <Reference Include="XamlCropControl.WinRT">
+      <HintPath>..\packages\XamlCropControl.WinRT.NuGet.1.0.4\lib\netcore45\XamlCropControl.WinRT.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

@@ -193,24 +193,110 @@ namespace imagesIPM
             }
         }
 
+
+        bool cropfirstclick = true;
+
+
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
+    
+            //editBitmap= editBitmap.Crop(0,0,100,100);
+            //MainImage.Source = editBitmap;
 
-            //crop
+            ////crop
+            //RectangleGeometry rect = new RectangleGeometry();
+            //rect.Rect = new Rect((Window.Current.Bounds.Width - 480) / 2, (Window.Current.Bounds.Height - 340) / 2, 480, 340);
+            //path.Data = rect;
 
-            //double sourceImageWidthScale = imageCanvas.Width / this.sourceImagePixelWidth;
-            //double sourceImageHeightScale = imageCanvas.Height / this.sourceImagePixelHeight;
-            //var rect = new Rect
-            //{
-            //    X = this.selectedRegion.SelectedRect.X / sourceImageWidthScale,
-            //    Y = this.selectedRegion.SelectedRect.Y / sourceImageHeightScale,
-            //    Width = this.selectedRegion.SelectedRect.Width / sourceImageWidthScale,
-            //    Height = this.selectedRegion.SelectedRect.Height / sourceImageHeightScale
-            //};
-            //editBitmap = editBitmap.Crop(rect);
-            //sourceImage.Source = editBitmap;
+            if (cropfirstclick)
+            {
+
+                
+
+                cropfirstclick = false;
+            }
+            else
+            {
+                
+
+                var actualwidth=MainImage.ActualWidth;
+
+                var pixelwidth = editBitmap.PixelWidth;
+
+
+                var ratio = pixelwidth / actualwidth;
+                var margin = (MainGrid.ActualWidth - MainImage.ActualWidth) / 2;
+
+                a.X = (a.X - margin) * ratio;
+                a.Y = a.Y * ratio;
+
+                b.X = (b.X - margin) * ratio;
+                b.Y = b.Y * ratio;
+                var rect1 = new Rect(a, b);
+
+                editBitmap = editBitmap.Crop(rect1);
+                MainImage.Source = editBitmap;
+
+                a = new Point()
+                {
+                    X = 0,
+                    Y = 0
+                };
+
+                b = a;
+                rect1 = new Rect(a, b);
+                RectangleGeometry rect = new RectangleGeometry();
+                rect.Rect = rect1;
+                path.Data = rect;
+                cropfirstclick = true;
+            }
+
+            
             
             vm.ImgChanged = true;
         }
+
+        private bool cropclicked = true;
+        Point a, b;
+        private void MainImage_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (!cropfirstclick)
+            {
+
+                if (cropclicked)
+                {
+
+                    a = e.GetPosition(MainGrid);
+                    b = a;
+                    cropclicked = false;
+                }
+                else
+                {
+                    b = e.GetPosition(MainGrid);
+                    cropclicked = true;
+                    performeDrawRect();
+                }
+                
+            }
+            
+        }
+
+        private void performeDrawRect()
+        {
+            RectangleGeometry rect = new RectangleGeometry();
+            rect.Rect = new Rect(a, b);
+            path.Data = rect;
+        }
+
+        private void MainImage_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            if (!cropclicked && !cropfirstclick)
+            {
+                b = e.GetCurrentPoint(MainGrid).Position;
+                performeDrawRect();
+            }
+           
+
+        } 
     }
 }

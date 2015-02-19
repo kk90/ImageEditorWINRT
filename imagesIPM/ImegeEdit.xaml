@@ -8,6 +8,7 @@
     xmlns:common="using:imagesIPM.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xamlcrop="using:XamlCropControl"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -50,13 +51,15 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
         
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Name="MainGrid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
-            <Image Name="MainImage"/>
+
+
+            <Image Name="MainImage" ManipulationMode="All" Tapped="MainImage_Tapped" PointerMoved="MainImage_PointerMoved" />
+            <Path x:Name="path" Stroke="Red" StrokeThickness="3" Tapped="MainImage_Tapped"/>
             <StackPanel Grid.Column="1">
                 <Button Content="Revert" IsEnabled="{Binding ImgChanged}" Click="Button_Click_2"/>
                 <Button Content="Negative" Click="Button_Click_3"/>
